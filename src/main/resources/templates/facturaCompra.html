@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Factura de Compra</title>
+</head>
+<body>
+	<object th:attr="data:application/pdf;base64,${pdfBytes}" width="100%" height="800px" type="application/pdf">
+		<p>Tu navegador no admite la visualización de archivos PDF.
+		 	<a th:href="@{/generarFacturaCompra/${compra.idCompra}}">Descargar PDF</a>
+		</p>
+	</object>
+	<!-- JS -->
+	<script>
+    	var sessionTimeout;
+    	function resetSessionTimeout() {
+    		clearTimeout(sessionTimeout);
+    		sessionTimeout = setTimeout(function() {
+    			window.location.href = '/logout';
+    		}, 30000);
+    	}
+    	document.addEventListener('mousemove', resetSessionTimeout);
+    	document.addEventListener('keydown', resetSessionTimeout);
+    </script>
+</body>
+</html>

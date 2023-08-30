@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Registrarse</title>
+	<!-- CSS-->
+	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.18/dist/sweetalert2.min.css" rel="stylesheet">
+    <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Icono de la página web-->
+    <link rel="icon" type="image/x-icon" th:href="@{images/logo.jpg}">
+    <style>
+    	@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+        body {
+            font-family: poppins, sans-serif;
+            background-image: url(images/background.png);
+            background-repeat: repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        input[type="file"] {
+        	width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-group input[type="submit"] {
+            background-color: #922A2A;
+            color: #fff;
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 10px 20px;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 5px;
+            min-height: 50px;
+            max-height: 80px;
+        }
+
+        .form-group input[type="submit"]:hover {
+        	background-color: #ef4227;
+        }
+    </style>
+</head>
+<body>
+	<br>
+	<div class="container">
+        <h2><b>Formulario de Registro</b></h2>
+        <form id="registerForm" th:action="@{/register}" method="post" th:object="${usuario}">
+            <div class="form-group">
+                <label for="nombres">Nombres</label>
+                <input type="text" id="nombres" name="nombres" autofocus="autofocus">
+            </div>
+            <div class="form-group">
+                <label for="apellido">Apellidos</label>
+                <input type="text" id="apellido" name="apellido">
+            </div>
+            <div class="form-group">
+                <label for="sexo">Sexo</label>
+                <select id="sexo" name="sexo">
+                    <option value="">Seleccionar</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Femenino">Femenino</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="telefono">Teléfono</label>
+                <input type="text" id="telefono" name="telefono">
+            </div>
+            <div class="form-group">
+                <label for="correo">Correo Electrónico</label>
+                <input type="email" id="correo" name="correo">
+            </div>
+            <div class="form-group">
+                <label for="cargo">Cargo</label>
+                <select id="cargo" name="cargo">
+                    <option value="">Seleccionar</option>
+                    <option value="Gerente">Gerente</option>
+                    <option value="Vendedora">Vendedora</option>
+                    <option value="Repartidor">Repartidor</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="salario">Salario</label>
+                <input type="number" step="0.01" id="salario" name="salario">
+            </div>
+            <div class="form-group">
+                <label for="imagen">Imagen</label>
+                <input type="file" id="imagen" name="imagen">
+            </div>
+            <div class="form-group">
+                <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+                <input type="date" id="fecha_nacimiento" name="fecha_nacimiento">
+            </div>
+            <div class="form-group">
+                <label for="tipo_documento">Tipo de Documento</label>
+                <select id="tipo_documento" name="tipo_documento">
+                    <option value="">Seleccionar</option>
+                    <option value="DNI">DNI</option>
+                    <option value="Pasaporte">Pasaporte</option>
+                    <option value="Carnet de Extranjería">Carnet de Extranjería</option>
+                    <option value="RUC">RUC</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="numero_documento">Número de Documento</label>
+                <input type="text" id="numero_documento" name="numero_documento">
+            </div>
+            <div class="form-group">
+                <label for="nomUsuario">Nombre de Usuario</label>
+                <input type="text" id="nomUsuario" th:field="*{nomUsuario}">
+            </div>
+            <div class="form-group">
+    			<label for="password">Contraseña</label>
+    			<div style="position: relative;">
+        			<input type="password" id="password" th:field="*{password}">
+        			<button type="button" id="togglePassword" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); background-color: transparent; border: none; outline: none; cursor: pointer;">
+            			<i id="eyeIcon" class="fa fa-eye"></i>
+        			</button>
+    			</div>
+			</div>
+            <div class="form-group">
+    			<label for="confirmar_contrasena">Confirmar Contraseña</label>
+    			<div style="position: relative;">
+        			<input type="password" id="confirmar_contrasena" name="confirmar_contrasena">
+        			<button type="button" id="toggleConfirmPassword" style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); background-color: transparent; border: none; outline: none; cursor: pointer;">
+            			<i id="eyeIconConfirm" class="fa fa-eye"></i>
+        			</button>
+    			</div>
+			</div>
+            <div class="form-group">
+                <input type="submit" value="Registrar">
+            </div>
+            <div class="form-group mt-4" style="text-align: end;">
+            	<span><a th:href="@{/login}">¡Inicia sesión aquí!</a></span>
+            </div>
+        </form>
+    </div>
+    <br>
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.18/dist/sweetalert2.all.min.js"></script>
+    <script>
+		document.getElementById("registerForm").addEventListener("submit", function(event) {
+			var nombres = document.getElementById("nombres").value;
+			var apellido = document.getElementById("apellido").value;
+			var telefono = document.getElementById("telefono").value;
+			var correo = document.getElementById("correo").value;
+			var salario = document.getElementById("salario").value;
+			var imagen = document.getElementById("imagen").value;
+			var fechanacimiento = document.getElementById("fecha_nacimiento").value;
+			var numerodocumento = document.getElementById("numero_documento").value;
+			var nomusuario = document.getElementById("nomUsuario").value;
+			var password = document.getElementById("password").value;
+			var confirmPassword = document.getElementById("confirmar_contrasena").value;
+			if (nombres === "" || apellido === "" || telefono === "" || correo === "" ||
+					salario === "" || imagen === "" || fechanacimiento === "" || 
+					numerodocumento === "" || nomusuario === "" || password === "" ) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: '¡Todos los campos son necesarios!',
+					confirmButtonText: 'Aceptar'
+				});
+				event.preventDefault();
+				return;
+			}
+			if (password.length < 8) {
+            	Swal.fire({
+                	icon: 'error',
+                	title: 'Error',
+                	text: '¡La contraseña debe tener al menos 8 caracteres!',
+                	confirmButtonText: 'Aceptar'
+            	});
+            	event.preventDefault();
+            	return;
+        	}
+
+        	var specialCharacters = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+        	var numbers = /\d/;
+        	var letters = /[a-zA-Z]/;
+
+        	if (!specialCharacters.test(password) || !numbers.test(password) || !letters.test(password)) {
+            	Swal.fire({
+                	icon: 'warning',
+                	title: 'Advertencia',
+                	text: '¡La contraseña debe contener caracteres especiales, al menos un número y al menos una letra!',
+                	confirmButtonText: 'Aceptar'
+            	});
+            	event.preventDefault();
+            	return;
+        	}
+        	if (password !== confirmPassword) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: '¡Las contraseñas no coinciden, por favor verifique!',
+                    confirmButtonText: 'Aceptar'
+                });
+                event.preventDefault();
+                return;
+            }
+		});	
+	</script>
+    <script th:if="${successMessage != null}" th:inline="javascript">
+    Swal.fire({
+        icon: 'success',
+        title: '¡Éxito!',
+        text: /*[[${successMessage}]]*/ '',
+        confirmButtonText: 'Aceptar'
+    });
+	</script>
+	<script>
+    	const passwordInput = document.getElementById("password");
+    	const confirmPasswordInput = document.getElementById("confirmar_contrasena");
+   	 	const togglePasswordButton = document.getElementById("togglePassword");
+    	const toggleConfirmPasswordButton = document.getElementById("toggleConfirmPassword");
+    	const eyeIcon = document.getElementById("eyeIcon");
+    	const eyeIconConfirm = document.getElementById("eyeIconConfirm");
+	
+    	togglePasswordButton.addEventListener("click", function () {
+        	if (passwordInput.type === "password") {
+            	passwordInput.type = "text";
+            	eyeIcon.classList.remove("fa-eye");
+            	eyeIcon.classList.add("fa-eye-slash");
+        	} else {
+            	passwordInput.type = "password";
+            	eyeIcon.classList.remove("fa-eye-slash");
+            	eyeIcon.classList.add("fa-eye");
+        	}
+    	});
+
+    	toggleConfirmPasswordButton.addEventListener("click", function () {
+        	if (confirmPasswordInput.type === "password") {
+            	confirmPasswordInput.type = "text";
+            	eyeIconConfirm.classList.remove("fa-eye");
+            	eyeIconConfirm.classList.add("fa-eye-slash");
+        	} else {
+            	confirmPasswordInput.type = "password";
+            	eyeIconConfirm.classList.remove("fa-eye-slash");
+            	eyeIconConfirm.classList.add("fa-eye");
+        	}
+    	});
+	</script>
+	<!-- FontAwesome -->
+	<script src="https://kit.fontawesome.com/8ddbb15f10.js" crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</body>
+</html>

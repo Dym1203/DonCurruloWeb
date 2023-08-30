@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Iniciar Sesión</title>
+	<!-- CSS-->
+	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.18/dist/sweetalert2.min.css" rel="stylesheet">
+    <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Icono de la página web-->
+    <link rel="icon" type="image/x-icon" th:href="@{images/logo.jpg}">
+    <style>
+    	@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+    	* {
+    		margin: 0px;
+			padding: 0px;
+			box-sizing: border-box;
+			font-family: poppins, sans-serif;
+			text-decoration: none;
+		}
+
+		body {
+			margin: 0;
+			padding: 0;
+			height: 100vh;
+			width: 100%;
+			overflow: hidden;
+		}
+		
+		.background-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url(images/office.png);
+            background-size: cover;
+            background-position: center;
+            filter: blur(4px);
+            z-index: -1;
+        }
+
+		header {
+			padding: 25px;
+		}
+
+		.container {
+			width: 1200px;
+			max-width: 100%;
+			margin: 0 auto;
+		}
+
+		h2 {
+			color: white;
+		}
+		
+		.login-outer {
+			height: 90vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.login {
+			width: 400px;
+			height: 530px;
+			padding: 50px;
+			box-shadow: 4px 7px 17px 5px #8e434b;
+			background-color: rgba(255, 255, 255, 0.9);
+			border-radius: 22px;
+		}
+
+		h1 {
+			font-weight: 500;
+			margin-bottom: 40px;
+			text-align: center;
+		}
+		
+		.input {
+			width: 100%;
+			height: 45px;
+			padding: 5px 15px;
+			margin-top: 10px;
+			margin-bottom: 15px;
+			outline: none;
+			border: 1px solid #ddd;
+		}
+
+		input[type="submit"] {
+			width: 100%;
+			padding: 10px;
+			margin-top: 19px;
+			background-color: #922A2A;
+			color: white;
+			letter-spacing: 2px;
+			border: none;
+			margin-top: 10px;
+			text-transform: uppercase;
+			cursor: pointer;
+			border-radius: 5px;
+		}
+
+		input[type="submit"]:hover {
+			background-color: #ef4227;
+		}
+
+		p {
+			margin-bottom: 20px;
+		}
+		
+		input[type="checkbox"] {
+			zoom: 1.3;
+			vertical-align: text-bottom;
+			cursor: pointer;
+		}
+		
+		.form-group {
+			margin-top: 20px;
+			text-align: center;
+		}
+		
+		.input-icon {
+    		position: relative;
+		}
+
+		.input-icon i {
+    		position: absolute;
+    		top: 50%;
+    		left: 10px;
+    		transform: translateY(-50%);
+    		color: #4D4D4D;
+		}
+		
+		.input-icon input {
+    		padding-left: 30px;
+		}
+		
+		.input-icon button {
+		    position: absolute;
+		    top: 50%;
+		    right: 33px;
+		    transform: translateY(-50%);
+		    background-color: transparent;
+		    border: none;
+		    outline: none;
+		    cursor: pointer;
+		}
+
+		.input-icon button i {
+    		color: #4D4D4D;
+		}
+    </style>
+</head>
+<body>
+	<div class="background-container"></div>
+	<header>
+    	<div class="container"></div>
+	</header>
+	<div class="login-outer">
+    	<div class="login">
+    		<form id="loginForm" class="formulario" th:action="@{/login}" method="post">
+        		<h1><b>Inicia sesión</b></h1>
+        		<label for="username">Usuario</label>
+        		<div class="input-icon">
+        			<span>
+        				<i class="fas fa-user"></i>
+        			</span>
+        			<input type="text" id="username" name="username" autofocus="autofocus" class="input" placeholder="Nombre de Usuario" />
+        		</div>
+        		<label for="password">Contraseña</label>
+        		<div class="input-icon">
+    				<span>
+        				<i class="fas fa-lock"></i>
+    				</span>
+    				<input type="password" id="password" name="password" placeholder="Contraseña" class="input" />
+    				<button type="button" id="togglePassword">
+        				<i id="eyeIcon" class="fa fa-eye"></i>
+    				</button>
+				</div>
+        		<input type="submit" role="button" id="login-submit" value="Ingresar"></input>
+        		<div>
+            		<br>
+            		<p style="margin-bottom: 10px; text-align: left;">
+            			<input type="checkbox" style="zoom: 1.3;">
+    					<span style="vertical-align: -2px;">Recuérdame</span>
+            		</p>
+            		<p style="margin-bottom: 10px; display: flex; align-items: baseline;">
+                		<a th:href="@{/register}" style="margin-left: auto;">¡Registrate aquí!</a>
+            		</p>
+        		</div>
+        	</form> 
+        	<div class="form-group" style="text-align: end;">
+        		<span><a th:href="@{/recoverpassword}">¿Olvidaste tu contraseña?</a></span>
+        	</div>
+    	</div>
+	</div>
+	<!-- JS-->
+	<!-- SweetAlert -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.18/dist/sweetalert2.all.min.js"></script>
+	<script>
+		document.getElementById("loginForm").addEventListener("submit", function(event) {
+			var username = document.getElementById("username").value;
+			var password = document.getElementById("password").value;
+			if (username === "" || password === "") {
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: '¡Campos vacíos, por favor ingrese el nombre de usuario y/o contraseña!',
+					confirmButtonText: 'Aceptar'
+				});
+				event.preventDefault();
+			}
+		});	
+	</script>
+	<script th:if="${bloqueado}">
+		var swalTimer = setTimeout(function() {
+			Swal.fire({
+				title: "¡Sistema bloqueado!",
+				text: "Espere 30 segundos",
+				icon: "error",
+				showConfirmButton: false,
+				timer: 30000,
+				allowOutsideClick: false
+			});
+		}, 100);
+	</script>
+	<script th:if="${errorMessage != null}" th:inline="javascript">
+    	window.onload = function() {
+    		Swal.fire({
+            	icon: 'error',
+            	title: '¡Error!',
+            	text: /*[[${errorMessage}]]*/ '',
+            	confirmButtonText: 'Aceptar'
+        	});		
+    	};
+	</script>
+	<script th:if="${successMessage != null}" th:inline="javascript">
+    Swal.fire({
+        icon: 'success',
+        title: '¡Éxito!',
+        text: /*[[${successMessage}]]*/ '',
+        confirmButtonText: 'Aceptar'
+    });
+	</script>
+	<script>
+    	const passwordInput = document.getElementById("password");
+    	const togglePasswordButton = document.getElementById("togglePassword");
+    	const eyeIcon = document.getElementById("eyeIcon");
+
+    	togglePasswordButton.addEventListener("click", function () {
+        	if (passwordInput.type === "password") {
+            	passwordInput.type = "text";
+            	eyeIcon.classList.remove("fa-eye");
+            	eyeIcon.classList.add("fa-eye-slash");
+        	} else {
+            	passwordInput.type = "password";
+            	eyeIcon.classList.remove("fa-eye-slash");
+            	eyeIcon.classList.add("fa-eye");
+        	}
+    	});
+	</script>
+	<!-- FontAwesome -->
+	<script src="https://kit.fontawesome.com/8ddbb15f10.js" crossorigin="anonymous"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</body>
+</html>

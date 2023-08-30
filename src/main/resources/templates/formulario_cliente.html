@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Formulario de Cliente</title>
+	<!-- CSS-->
+	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.18/dist/sweetalert2.min.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- https://material.io/resources/icons/?style=outline -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
+    <!-- https://material.io/resources/icons/?style=sharp -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Sharp" rel="stylesheet">
+    <!-- Icono de la página web-->
+    <link rel="icon" type="image/x-icon" th:href="@{/images/logo.jpg}">
+    <style>
+    	@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+    	* {
+    		font-family: poppins, sans-serif;
+    	}
+    	body {
+    		background-color: rgba(132, 139, 200, 0.18);
+    	}
+    	.card {
+    		box-shadow: 4px 5px 17px 5px #8e434b;
+    	}
+    </style>
+</head>
+<body>
+	<nav class="navbar navbar-expand-md bg-dark navdar-dark">
+  		<div class="container-fluid">
+    		<a class="text-white navbar-brand" th:href="@{/clientes}">
+      			<img th:src="@{/images/restaurante.png}" width="30" height="30" class="d-inline-block align-text-top">
+      			Sistema <span style="color: #ff7782;">Don Currulo</span>
+    		</a>
+    		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      			<span class="navbar-toggler-icon"></span>
+    		</button>
+    		<div class="collapse navbar-collapse" id="navbarNav"></div>
+  		</div>
+	</nav>
+	<div class="container" style="margin-top: 70px;">
+		<div class="row justify-content-center">
+			<div class="col-lg-7 col-md-8 col-sm-10 card">
+				<h1 class="text-center" style="margin-top: 5%; text-decoration-color: white;"><b>Registro de Cliente</b></h1>
+				<div class="card-body">
+					<!-- Agregamos la clase "form-horizontal" para que el formulario se muestre en dos columnas -->
+					<form id="registrar-cliente" th:action="@{/clientes}" th:object="${cliente}" method="post" class="form-horizontal">
+						<div class="row">
+							<!-- Columna izquierda -->
+							<div class="col-md-4" style="margin-top: 0%;">
+								<div class="form-group mt-4">
+									<span class="material-icons-sharp" style="vertical-align: middle;">face</span>
+									<label for="nomCli" style="vertical-align: middle;">Nombres </label>
+									<input type="text" name="nomCli" th:field="*{nomCli}" autofocus="autofocus" class="form-control mt-3" style="background-color: #EFEFEF; border-radius: 0cm;" />
+								</div>
+								<div class="form-group mt-4">
+									<span class="material-icons-sharp" style="vertical-align: middle;">face</span>
+									<label for="apeCli" style="vertical-align: middle;">Apellidos </label>
+									<input type="text" name="apeCli" th:field="*{apeCli}" class="form-control mt-3" style="background-color: #EFEFEF; border-radius: 0cm;" />
+								</div>
+								<div class="form-group mt-4">
+								    <span class="material-icons-sharp" style="vertical-align: middle;">diversity_1</span>
+								    <label for="sexo" style="vertical-align: middle;">Sexo </label>
+								    <select name="sexo" th:field="*{sexo}" class="form-control mt-3"
+								            style="background-color: #EFEFEF; border-radius: 0cm;">
+								        <option value="Masculino">Masculino</option>
+								        <option value="Femenino">Femenino</option>
+								    </select>
+								</div>
+								<div class="form-group mt-4">
+									<span class="material-icons-sharp" style="vertical-align: middle;">location_city</span>
+									<label for="dirCli" style="vertical-align: middle;">Dirección </label>
+									<input type="text" name="dirCli" th:field="*{dirCli}" class="form-control mt-3" style="background-color: #EFEFEF; border-radius: 0cm;" />
+								</div>
+							</div>
+							<!-- Columna central -->
+							<div class="col-md-4">
+								<div class="form-group mt-4">
+                                    <span class="material-icons-sharp" style="vertical-align: middle;">call</span>
+                                    <label for="telCli" style="vertical-align: middle;">Teléfono </label>
+                                    <input type="text" name="telCli" th:field="*{telCli}" class="form-control mt-3"
+                                        style="background-color: #EFEFEF; border-radius: 0cm;" />
+                                </div>
+								<div class="form-group mt-4">
+									<span class="material-icons-sharp" style="vertical-align: middle;">badge</span>
+									<label for="tipoidentificacion" style="vertical-align: middle;">Identificación </label>
+									<select name="tipoidentificacion" th:field="*{tipoidentificacion}" class="form-control mt-3" style="background-color: #EFEFEF; border-radius: 0cm;">
+										<option th:each="identificacion : ${identificaciones}" th:value="${identificacion.codIdent}" th:text="${identificacion.tipoIdent}" >
+										</option>
+									</select>
+								</div>
+								<div class="form-group mt-4">
+									<span class="material-icons-sharp" style="vertical-align: middle;">pin</span>
+									<label for="numDoc" style="vertical-align: middle;">Número de Documento </label>
+									<input type="text" name="numDoc" th:field="*{numDoc}" class="form-control mt-3" style="background-color: #EFEFEF; border-radius: 0cm;" />
+								</div>
+								<div class="form-group mt-4">
+									<span class="material-icons-sharp" style="vertical-align: middle;">email</span>
+									<label for="emailCli" style="vertical-align: middle;">Email </label>
+									<input type="email" name="emailCli" th:field="*{emailCli}" class="form-control mt-3" style="background-color: #EFEFEF; border-radius: 0cm;" />
+								</div>
+							</div>
+							<!-- Columna derecha -->
+							<div class="col-md-4">
+								<div class="form-group mt-4">
+									<span class="material-icons-sharp" style="vertical-align: middle;">image</span>
+									<label for="imagen" style="vertical-align: middle;">Imagen </label>
+									<input type="file" name="imagen" th:field="*{imagen}" class="form-control mt-3" style="background-color: #EFEFEF; border-radius: 0cm;" />
+								</div>
+								<div class="form-group mt-4">
+									<span class="material-icons-sharp" style="vertical-align: middle;">account_circle</span>
+									<label for="usuario" style="vertical-align: middle;">Usuario </label>
+									<select name="usuario" th:field="*{usuario}" class="form-control mt-3" style="background-color: #EFEFEF; border-radius: 0cm;">
+										<option th:each="usuario : ${usuarios}" th:value="${usuario.idUsuario}" th:text="${usuario.nomUsuario}" >
+										</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						 <!-- Resto de campos -->
+						<div class="form-group mt-4" style="width: 100%;">
+							<button class="btn btn-success" id="btnRegistrar" style="width: 100%; height: 3.5rem; background-color: #843A3A; border-style: inherit;">
+								<b>Registrar</b>
+							</button>
+						</div>
+						<input type="hidden" th:field="*{idCliente}">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Script de la página web -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.18/dist/sweetalert2.all.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+	<script>
+		const btnRegistrar = document.getElementById('btnRegistrar');
+    	const formRegistrar = document.querySelector('#registrar-cliente');
+
+    	btnRegistrar.addEventListener('click', function(event) {
+            event.preventDefault();
+            
+            const nomCli = formRegistrar.querySelector('[name="nomCli"]').value;
+            const apeCli = formRegistrar.querySelector('[name="apeCli"]').value;
+            const dirCli = formRegistrar.querySelector('[name="dirCli"]').value;
+            const telCli = formRegistrar.querySelector('[name="telCli"]').value;
+            const numDoc = formRegistrar.querySelector('[name="numDoc"]').value;
+            const emailCli = formRegistrar.querySelector('[name="emailCli"]').value;
+            const imagen = formRegistrar.querySelector('[name="imagen"]').value;
+         	
+            if (nomCli.trim() === "" || apeCli.trim() === "" || dirCli.trim() === "" ||
+            		telCli.trim() === "" || numDoc.trim() === "" || emailCli.trim() === ""
+            		|| imagen.trim() === "") {
+            	Swal.fire({
+                    title: 'Error',
+                    text: '¡Campos vacíos! Por favor completa todos los campos',
+                    icon: 'error',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Aceptar'
+                });
+            } else {
+            	Swal.fire({
+            		title: 'Procesando',
+            		text: 'Registrando cliente...',
+            		icon: 'info',
+            		showConfirmButton: false,
+            		allowOutsideClick: false,
+            		didOpen: () => {
+            			Swal.showLoading();
+            		}
+            	});
+            	
+            	setTimeout(() => {
+            		Swal.fire({
+                        title: 'Éxito',
+                        text: '¡Cliente registrado con éxito!',
+                        icon: 'success',
+                        showConfirmButton: true,
+                        confirmButtonText: 'Aceptar',
+                        confirmButtonColor: '#28a745',
+                        allowOutsideClick: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            formRegistrar.submit();
+                        }
+                    });		
+            	}, 3000);
+            }
+        });
+	</script>
+	<script>
+    	var sessionTimeout;
+    	function resetSessionTimeout() {
+    		clearTimeout(sessionTimeout);
+    		sessionTimeout = setTimeout(function() {
+    			window.location.href = '/logout';
+    		}, 30000);
+    	}
+    	document.addEventListener('mousemove', resetSessionTimeout);
+    	document.addEventListener('keydown', resetSessionTimeout);
+    </script>
+</body>
+</html>

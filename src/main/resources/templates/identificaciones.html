@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://www.thymeleaf.org" xmlns:sec = "http://www.thymeleaf.org/extras/spring-security">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title th:text=${Titulo}></title>
+	<!-- CSS-->
+	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.18/dist/sweetalert2.min.css" rel="stylesheet">
+    <!-- https://material.io/resources/icons/?style=outline -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Outlined" rel="stylesheet">
+    <!-- https://material.io/resources/icons/?style=sharp -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Sharp" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <!-- Icono de la página web-->
+    <link rel="icon" type="image/x-icon" th:href="@{images/logo.jpg}">
+    <style>
+    	* {
+    		font-family: poppins, sans-serif;
+    	}
+    	.toast {
+	        position: fixed;
+	        top: 30px;
+	        left: 50%;
+	        transform: translateX(-50%);
+	        background-color: rgba(0, 0, 0, 0.7);
+	        color: white;
+	        padding: 10px 20px;
+	        border-radius: 5px;
+	        opacity: 0;
+	        visibility: hidden;
+	        transition: opacity 0.3s, visibility 0.3s;
+    	}
+    </style>
+</head>
+<body>
+	<div class="container">
+        <aside>
+            <div class="top">
+                <div class="logo">
+                    <img th:src="@{images/restaurante.png}">
+                    <h2>Sistema<span class="danger"> Don Currulo</span></h2>
+                </div>
+                <div class="close" id="close-btn">
+                    <span class="material-icons-sharp">close</span>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <a th:href="@{/index}">
+                    <span class="material-icons-sharp">dashboard</span>
+                    <h3>Dashboard</h3>
+                </a>
+                <a sec:authorize="hasAuthority('Gerente') or hasAuthority('Vendedora')" th:href="@{/categorias}">
+                    <span class="material-icons-sharp">menu_book</span>
+                    <h3>Categorías</h3>
+                </a>
+                <a sec:authorize="hasAuthority('Gerente') or hasAuthority('Vendedora') or hasAuthority('Repartidor')" th:href="@{/platos}">
+                    <span class="material-icons-sharp">restaurant_menu</span>
+                    <h3>Productos</h3>
+                </a>
+                <a sec:authorize="hasAuthority('Gerente')" th:href="@{/identificaciones}" class="active">
+                    <span class="material-icons-outlined">badge</span>
+                    <h3>Identificaciones</h3>
+                </a>
+                <a sec:authorize="hasAuthority('Gerente')" th:href="@{/proveedores}">
+                    <span class="material-icons-sharp">supervisor_account</span>
+                    <h3>Proveedores</h3>
+                </a>
+                <a sec:authorize="hasAuthority('Gerente')" th:href="@{/compras}">
+                	<span class="material-icons-sharp">local_shipping</span>
+                	<h3>Compras</h3>
+                </a>
+                <a sec:authorize="hasAuthority('Gerente')" th:href="@{/empleados}">
+                    <span class="material-icons-sharp">person</span>
+                    <h3>Empleados</h3>
+                </a>
+                <a sec:authorize="hasAuthority('Gerente')" th:href="@{/usuarios}">
+                    <span class="material-icons-sharp">account_box</span>
+                    <h3>Usuarios</h3>
+                </a>
+                <a sec:authorize="hasAuthority('Gerente') or hasAuthority('Vendedora') or hasAuthority('Repartidor')" th:href="@{/clientes}">
+                    <span class="material-icons-sharp">face_6</span>
+                    <h3>Clientes</h3>
+                </a>
+                <a sec:authorize="hasAuthority('Gerente')" th:href="@{/roles}">
+                    <span class="material-icons-sharp">key</span>
+                    <h3>Roles</h3>
+                </a>
+                <a sec:authorize="hasAuthority('Repartidor') or hasAuthority('Vendedora')" th:href="@{/pedidos}">
+                    <span class="material-icons-sharp">report_gmailerrorred</span>
+                    <h3>Pedidos</h3>
+                </a>
+                <a sec:authorize="isAuthenticated()" th:href="@{/logout}">
+                    <span class="material-icons-sharp">logout</span>
+                    <h3>Cerrar Sesión</h3>
+                </a>
+            </div>
+        </aside>
+        <!-- Fin de Aside-->
+        <main>
+            <h1>Identificaciones</h1>
+            <div class="seccion">
+                <a th:href="@{/identificaciones/nuevoTipoIdentificacion}">
+                    <i class="fas fa-plus-circle" style="margin-right: 5px;"></i>Agregar Identificación
+                </a>
+            </div>
+            <br><br><br><br><br><br><br><br><br><br><br>
+            <div class="recent-orders">
+                <h2>Listado de Identificaciones</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Estado</th>
+                            <th>Editar</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    	<tr th:each="tipoidentificacion : ${listidentificaciones}">
+                    		<td th:text="'I0' + ${tipoidentificacion.codIdent}"></td>
+                    		<td th:text="${tipoidentificacion.tipoIdent}"></td>
+                    		<td th:text="${tipoidentificacion.estado ? 'Activo' : 'Inactivo'}"
+    							th:class="${tipoidentificacion.estado ? 'success' : 'danger'}"></td>
+                    		<td>
+                    			<a th:href="@{/identificaciones/editar/{codIdent}(codIdent=${tipoidentificacion.codIdent})}">
+                    				<span class="material-icons-sharp warning">edit_note</span>
+                    			</a>
+                    		</td>
+                    		<td>
+                    			<a th:href="@{/identificaciones/{codIdent}(codIdent=${tipoidentificacion.codIdent})}" data-codIdent="${tipoidentificacion.codIdent}">
+                    				<span class="material-icons-sharp danger">delete_forever</span>
+                    			</a>
+                    		</td>
+                    	</tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Fin del Recent Orders-->
+        </main>
+        <!-- Fin de Main-->
+
+        <div class="right">
+        	<div class="top">
+            	<button id="menu-btn">
+                	<span class="material-icons-sharp">menu</span>
+                </button>
+                <a id="showToast" th:href="@{#}">
+                	<span class="material-icons-sharp">mail_outline</span>
+                    <span class="message-count">0</span>
+                </a>
+                <div class="toast" id="toast">¡No hay mensajes!</div>
+                <div class="theme-toggler">
+                    <span class="material-icons-sharp active">light_mode</span>
+                	<span class="material-icons-sharp">dark_mode</span>
+                </div>
+                <div class="profile">
+                	<div class="info">
+                    	<p>Hola, <b sec:authentication="principal.username"></b></p>
+                       	<small sec:authentication="principal.authorities" class="text-muted"></small>
+                   	</div>
+                   	<div class="profile-photo">
+                        <img th:src="@{images/profile-1.png}">
+                    </div>
+                </div>
+          	</div>
+            <div class="recent-updates">
+            	<h2>Últimas Actualizaciones</h2>
+               	<div class="updates">
+                	<div class="update">
+                    	<div class="profile-photo">
+                        	<img th:src="@{images/profile-2.jpg}">
+                        </div>
+                        <div class="message">
+                           	<p><b>César Flores</b> recibió su pedido del plato Chancho al Cilindro</p>
+                            <small class="text-muted">Hace 2 minutos</small>
+                        </div>
+                    </div>
+                    <div class="update">
+                        <div class="profile-photo">
+                            <img th:src="@{images/profile-3.jpg}">
+                        </div>
+                        <div class="message">
+                            <p><b>Diana Gutiérrez</b> rechazó su pedido del plato Arroz con Mariscos</p>
+                            <small class="text-muted">Hace 5 minutos</small>
+                        </div>
+                    </div>
+                    <div class="update">
+                        <div class="profile-photo">
+                            <img th:src="@{images/profile-4.jpg}">
+                        </div>
+                        <div class="message">
+                            <p><b>María Cueva</b> recibió su pedido del combo Don Currulo</p>
+                            <small class="text-muted">Hace 6 minutos</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <!-- Fin del Recent Updates-->
+            <div class="sales-analytics">
+            	<h2>Análisis de Ventas</h2>
+                <div class="item online">
+               		<div class="icon">
+                    	<span class="material-icons-sharp">shopping_cart</span>
+                    </div>
+                    <div class="right">
+                        <div class="info">
+                       		<h3>PEDIDOS EN LINEA</h3>
+                            <small class="text-muted">Últimas 24 Horas</small>
+                        </div>
+                        <h5 class="success">+39%</h5>
+                        <h3>3849</h3>
+                   	</div>
+               	</div>
+                <div class="item offline">
+                	<div class="icon">
+                    	<span class="material-icons-sharp">local_mall</span>
+                    </div>
+                    <div class="right">
+                       	<div class="info">
+                       		<h3>PEDIDOS CANCELADOS</h3>
+                            <small class="text-muted">Últimas 24 Horas</small>
+                       	</div>
+                        <h5 class="danger">-17%</h5>
+                       	<h3>1100</h3>
+                   	</div>
+               	</div>
+                <div class="item customers">
+                	<div class="icon">
+                    	<span class="material-icons-sharp">person</span>
+                    </div>
+                    <div class="right">
+                    	<div class="info">
+                        	<h3>NUEVOS CLIENTES</h3>
+                            <small class="text-muted">Últimas 24 Horas</small>
+                        </div>
+                        <h5 class="success">+25%</h5>
+                        <h3>849</h3>
+                    </div>
+                </div>
+           	</div>
+            <!-- Fin-->
+     	</div>
+   	</div>    
+	<!-- Script de la página web-->
+	<script>
+        const showToastButton = document.getElementById('showToast');
+        const toast = document.getElementById('toast');
+
+        showToastButton.addEventListener('click', () => {
+            toast.style.opacity = '1';
+            toast.style.visibility = 'visible';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.visibility = 'hidden';
+            }, 2000); // Ocultar el toast después de 2 segundos
+        });
+    </script>
+    <script>
+    	var sessionTimeout;
+    	function resetSessionTimeout() {
+    		clearTimeout(sessionTimeout);
+    		sessionTimeout = setTimeout(function() {
+    			window.location.href = '/logout';
+    		}, 30000);
+    	}
+    	document.addEventListener('mousemove', resetSessionTimeout);
+    	document.addEventListener('keydown', resetSessionTimeout);
+    </script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.18/dist/sweetalert2.all.min.js"></script>
+	<script>
+		const eliminarLinks = document.querySelectorAll('a[data-codIdent]');
+		eliminarLinks.forEach(link => {
+	        link.addEventListener('click', function (event) {
+	            event.preventDefault();
+
+	            const codIdent = this.getAttribute('data-codIdent');
+	            const urlEliminar = this.getAttribute('href');
+	            
+        		Swal.fire({
+            		title: '¿Estás seguro?',
+            		text: 'Esta acción eliminará la identificación. ¿Quieres continuar?',
+            		icon: 'warning',
+            		showCancelButton: true,
+            		confirmButtonText: 'Aceptar',
+            		confirmButtonColor: '#28a745',
+            		cancelButtonText: 'Cancelar',
+            		cancelButtonColor: '#dc3545'
+        		}).then((result) => {
+            		if (result.isConfirmed) {
+                		window.location.href = urlEliminar;
+            		}
+        		});
+    		});
+		});	
+	</script>
+    <!-- FontAwesome -->
+	<script src="https://kit.fontawesome.com/8ddbb15f10.js" crossorigin="anonymous"></script>
+    <script th:src="@{js/index.js}"></script>
+</body>
+</html>
